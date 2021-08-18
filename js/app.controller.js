@@ -15,19 +15,16 @@ window.onSaveLocation = onSaveLocation;
 function onInit() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
-    if (params.lng && params.lat) {
-        mapService.initMap(+params.lat, +params.lng)
-            .then(() => {
-                onGetWeather({ lat: +params.lat, lng: +params.lng });
-            })
-            .catch(() => console.log('Error: cannot init map'));
-    } else {
-        mapService.initMap()
-            .then(() => {
-                onGetWeather();
-            })
-            .catch(() => console.log('Error: cannot init map'));
+    if (!params.lng || !params.lat) {
+        params.lat = 32.0749831;
+        params.lng = 34.9120554;
     }
+    mapService.initMap(+params.lat, +params.lng)
+        .then(() => {
+            onGetWeather({ lat: +params.lat, lng: +params.lng });
+        })
+        .catch(() => console.log('Error: cannot init map'));
+
 }
 
 function onAddMarker() {

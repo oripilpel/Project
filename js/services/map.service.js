@@ -23,7 +23,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             })
             let infoWindow = new google.maps.InfoWindow({
                 content: "Click the map to Save Locations!",
-                position: { lat: 32.0749831, lng: 34.9120554 }
+                position: { lat, lng }
             });
 
             infoWindow.open(gMap);
