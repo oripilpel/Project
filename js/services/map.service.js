@@ -5,7 +5,8 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getGeoLocation
+    getGeoLocation,
+    getCurrLoc
 }
 
 var gMap;
@@ -73,4 +74,8 @@ function getGeoLocation(address) {
     //     callback(location)
     //     callback2(location)
     // })
+}
+
+function getCurrLoc() {
+    return {lat: gMap.center.lat(), lng: gMap.center.lng()};
 }
