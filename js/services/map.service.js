@@ -1,4 +1,5 @@
 import { locService } from './loc.service.js';
+import { saveService } from './storage.service.js';
 
 
 export const mapService = {
@@ -20,7 +21,16 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
-            console.log('Map!', gMap);
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Click the map to Save Locations!",
+                position: { lat: 32.0749831, lng: 34.9120554 }
+            });
+            infoWindow.open(gMap);
+            gMap.addListener("click", (mapsMouseEvent) => {
+                infoWindow.close();
+                
+            })
+
         })
 }
 
@@ -66,7 +76,9 @@ function getGeoLocation(address) {
                 console.log('req');
                 const location = res.data.results[0].geometry.location
                 locs.push({ name: address, lat: location.lat, lng: location.lng })
+                saveService.save('locationDB', locs)
                 return Promise.resolve(location)
             })
     })
 }
+
