@@ -25,7 +25,7 @@ function getLocByName(name) {
 }
 
 function addLoc(locName, pos) {
-    locs.push({ name: locName, lat: pos.lat, lng: pos.lng })
+    locs.push({ name: locName, lat: pos.lat, lng: pos.lng, createdAt: Date.now() })
     saveLocs();
 }
 
