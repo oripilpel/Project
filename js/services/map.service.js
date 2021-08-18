@@ -26,12 +26,12 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 15
             })
             gInfoWindow = new google.maps.InfoWindow({
-                content: "Click the map to Save Locations!",
+                content: 'Click the map to Save Locations!',
                 position: { lat, lng }
             });
 
             gInfoWindow.open(gMap);
-            gMap.addListener("click", (mapsMouseEvent) => {
+            gMap.addListener('click', (mapsMouseEvent) => {
                 gInfoWindow.close();
                 gInfoWindow = new google.maps.InfoWindow({
                     position: mapsMouseEvent.latLng,
@@ -40,6 +40,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 <button class="yes" onclick="onSaveLocation${mapsMouseEvent.latLng}">Save</button>`
                 });
                 gInfoWindow.open(gMap);
+            })
+            gMap.addListener('mouseup', (mapsMouseEvent) => {
+                window.history.pushState('', '', `?lat=${mapsMouseEvent.latLng.lat()}&lng=${mapsMouseEvent.latLng.lng()}`);
             })
 
         })
