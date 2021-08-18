@@ -6,6 +6,7 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onSearch = onSearch;
 
 function onInit() {
     mapService.initMap()
@@ -47,7 +48,13 @@ function onGetUserPos() {
             console.log('err!!!', err);
         })
 }
-function onPanTo() {
+
+function onPanTo(place) {
     console.log('Panning the Map');
-    mapService.panTo(35.6895, 139.6917);
+    mapService.panTo(place.lat, place.lng);
+}
+
+function onSearch() {
+    const location = document.querySelector('[name="location"]').value
+    mapService.getGeoLocation(location, onPanTo)
 }

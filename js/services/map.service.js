@@ -3,7 +3,8 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getGeoLocation
 }
 
 var gMap;
@@ -36,11 +37,9 @@ function panTo(lat, lng) {
     gMap.panTo(laLatLng);
 }
 
-
-
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = ''; //TODO: Enter your API Key
+    const API_KEY = 'AIzaSyBj6uH299fNka4OlOEA05hitpszMFv3b1g'; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -50,4 +49,23 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+function getGeoLocation(address, callback) {
+    const API_KEY = 'AIzaSyBj6uH299fNka4OlOEA05hitpszMFv3b1g'
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY}`
+    const locs = locService.getLocs()
+    const locIdx = locs.findIndex(loc => loc.name === address)
+    if (locIdx !== -1) {
+        callback(locs[locIdx])
+        return
+    }
+
+    const prm = axios.get(url)
+        .then(res => {
+            const location = res.data.results[0].geometry.location
+            locs.push(location)
+            return location
+        })
+        .then(callback)
 }
