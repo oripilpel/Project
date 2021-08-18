@@ -16,10 +16,8 @@ let gInfoWindow;
 let gMarkers = [];
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-    console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
-            console.log('google available');
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: { lat, lng },
@@ -82,12 +80,10 @@ function getGeoLocation(address) {
     return locService.getLocs().then(locs => {
         const locIdx = locs.findIndex(loc => loc.name === address.toLowerCase())
         if (locIdx !== -1) {
-            console.log('from cache');
             return Promise.resolve(locs[locIdx])
         }
         return axios.get(url)
             .then(res => {
-                console.log('req');
                 const location = res.data.results[0].geometry.location
                 return Promise.resolve(location)
             })
