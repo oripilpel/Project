@@ -31,7 +31,7 @@ function renderLocsList() {
                 <span class="flex align-center">${loc.name}</span>
                 <div class="actions">
                     <button class="btn btn-go transform" onclick="onLocSelected('${loc.name}')">Go</button>
-                    <button class="btn btn-remove transform" onclick="onRemoveLoc('${loc.name}')">Delete</button>
+                    <button class="btn btn-remove transform" onclick="onRemoveLoc(this,'${loc.name}')">Delete</button>
                 </div>
             </li>`).join('');
         })
@@ -53,7 +53,8 @@ function renderWeather(weather) {
         <div>`;
 }
 
-function onRemoveLoc(locName) {
+function onRemoveLoc(elBtn, locName) {
+    elBtn.parentNode.parentNode.classList.add('hide')
     mapService.removeMarker(locName);
     locService.remove(locName);
     renderLocsList();
