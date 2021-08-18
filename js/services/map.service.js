@@ -1,18 +1,19 @@
 import { locService } from './loc.service.js';
 
-
 export const mapService = {
     initMap,
     addMarker,
+    addMarkers,
+    removeMarker,
     panTo,
     getGeoLocation,
     getCurrLoc,
     closeInfoWindow
 }
 
-var gMap;
-var gInfoWindow;
-
+let gMap;
+let gInfoWindow;
+let gMarkers = [];
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
@@ -48,7 +49,7 @@ function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
         map: gMap,
-        title: 'Hello World!'
+        title: loc.name
     });
     return marker;
 }
@@ -90,12 +91,25 @@ function getGeoLocation(address) {
     })
 }
 
-
-
 function getCurrLoc() {
     return { lat: gMap.center.lat(), lng: gMap.center.lng() };
 }
 
 function closeInfoWindow() {
     gInfoWindow.close()
+}
+
+function addMarkers(locsPrm) {
+    return locsPrm.then(locs => {
+        locs.forEach(loc =>
+            gMarkers.push({ name: loc.name, marker: addMarker(loc) })
+        );
+    });
+}
+
+function removeMarker(locName) {
+    var idx = gMarkers.findIndex(marker => marker.name === locName);
+    var marker = gMarkers[idx];
+    marker.marker.setMap(null);
+    gMarkers.splice(idx, 1);
 }

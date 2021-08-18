@@ -4,10 +4,7 @@ import { utilsService } from './services/utils.service.js';
 import { weatherService } from './services/weather.service.js';
 
 window.onload = onInit;
-window.onAddMarker = onAddMarker;
-window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;
-window.onGetUserPos = onGetUserPos;
+window.onShowUserPos = onShowUserPos;
 window.onSearch = onSearch;
 window.onCopyLink = onCopyLink;
 window.onRemoveLoc = onRemoveLoc;
@@ -22,19 +19,16 @@ function onInit() {
         params.lat = 32.0749831;
         params.lng = 34.9120554;
     }
-    mapService.initMap(+params.lat, +params.lng)
-        .then(() => {
-            onGetWeather({ lat: +params.lat, lng: +params.lng });
-        })
+    Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
+        .then(() => onGetWeather({lat: params.lat, lng: params.lng}))
         .catch(() => console.log('Error: cannot init map'));
-
 }
 
 function renderLocsList() {
     locService.getLocs()
         .then(locs => {
             document.querySelector('.locations').innerHTML = locs.map(loc => `<li class="flex justify-between">
-                <span>${loc.name}</span>
+                <span class="flex align-center">${loc.name}</span>
                 <div class="actions">
                     <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
                     <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
@@ -53,34 +47,22 @@ function renderWeather(weather) {
     document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
         <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
         <div class="weather-info flex">
-            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
+            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatCelsius(weather.main.temp_min)} - ${utilsService.formatCelsius(weather.main.temp_max)}</span>
         <div>`;
 }
 
 function onRemoveLoc(locName) {
+    mapService.removeMarker(locName);
     locService.remove(locName);
     renderLocsList();
 }
 
-function onAddMarker() {
-    console.log('Adding a marker');
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
-}
-
-function onGetLocs() {
-    locService.getLocs()
-        .then(locs => {
-            console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
-        });
-}
-
-function onGetUserPos() {
+function onShowUserPos() {
     utilsService.getPosition()
-        .then(pos => {
-            console.log('User position is:', pos.coords);
-            document.querySelector('.user-pos').innerText =
-                `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+        .then(({ coords }) => {
+            const pos = { lat: coords.latitude, lng: coords.longitude };
+            onPanTo(pos);
+            onGetWeather(pos);
         })
         .catch(err => {
             console.log('err!!!', err);
@@ -88,7 +70,6 @@ function onGetUserPos() {
 }
 
 function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
-    console.log('Panning the Map');
     mapService.panTo(loc.lat, loc.lng);
 }
 
@@ -117,7 +98,9 @@ function onCopyLink() {
 function onSaveLocation(lat, lng) {
     const locName = document.querySelector('[name="place-name-prompt"]').value
     if (!locName.trim()) return
-    locService.add(locName, { lat, lng })
+    const loc = { name: locName, lat, lng };
+    locService.add(loc);
+    mapService.addMarker(loc);
     mapService.closeInfoWindow();
     renderLocsList()
 }
