@@ -52,7 +52,7 @@ function renderWeather(weather) {
         <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
         <div class="weather-info flex">
             <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
-        <div>`
+        <div>`;
 }
 
 function onRemoveLoc(locName) {
@@ -70,7 +70,7 @@ function onGetLocs() {
         .then(locs => {
             console.log('Locations:', locs)
             document.querySelector('.locs').innerText = JSON.stringify(locs)
-        })
+        });
 }
 
 function onGetUserPos() {
@@ -82,7 +82,7 @@ function onGetUserPos() {
         })
         .catch(err => {
             console.log('err!!!', err);
-        })
+        });
 }
 
 function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
@@ -96,8 +96,7 @@ function onSearch() {
     gelLoc.then(location => {
         onGetWeather(location)
         mapService.panTo(location)
-    }
-    )
+    });
 }
 
 function onGetWeather(loc) {
