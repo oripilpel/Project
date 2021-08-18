@@ -4,10 +4,7 @@ import { utilsService } from './services/utils.service.js';
 import { weatherService } from './services/weather.service.js';
 
 window.onload = onInit;
-window.onAddMarker = onAddMarker;
-window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;
-window.onGetUserPos = onGetUserPos;
+window.onShowUserPos = onShowUserPos;
 window.onSearch = onSearch;
 window.onCopyLink = onCopyLink;
 window.onRemoveLoc = onRemoveLoc;
@@ -22,12 +19,8 @@ function onInit() {
         params.lat = 32.0749831;
         params.lng = 34.9120554;
     }
-    mapService.initMap(+params.lat, +params.lng)
-        .then(() => {
-            onGetWeather({ lat: +params.lat, lng: +params.lng });
-        })
+    Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
         .catch(() => console.log('Error: cannot init map'));
-
 }
 
 function renderLocsList() {
@@ -58,13 +51,9 @@ function renderWeather(weather) {
 }
 
 function onRemoveLoc(locName) {
+    mapService.removeMarker(locName);
     locService.remove(locName);
     renderLocsList();
-}
-
-function onAddMarker() {
-    console.log('Adding a marker');
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
 }
 
 function onGetLocs() {
@@ -75,12 +64,12 @@ function onGetLocs() {
         });
 }
 
-function onGetUserPos() {
+function onShowUserPos() {
     utilsService.getPosition()
-        .then(pos => {
-            console.log('User position is:', pos.coords);
-            document.querySelector('.user-pos').innerText =
-                `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+        .then(({ coords }) => {
+            const pos = { lat: coords.latitude, lng: coords.longitude };
+            onPanTo(pos);
+            onGetWeather(pos);
         })
         .catch(err => {
             console.log('err!!!', err);
@@ -88,7 +77,6 @@ function onGetUserPos() {
 }
 
 function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
-    console.log('Panning the Map');
     mapService.panTo(loc.lat, loc.lng);
 }
 
@@ -116,7 +104,9 @@ function onCopyLink() {
 function onSaveLocation(lat, lng) {
     const locName = document.querySelector('[name="place-name-prompt"]').value
     if (!locName.trim()) return
-    locService.add(locName, { lat, lng })
+    const loc = { name: locName, lat, lng };
+    locService.add(loc);
+    mapService.addMarker(loc);
     mapService.closeInfoWindow();
     renderLocsList()
 }

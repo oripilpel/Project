@@ -1,4 +1,5 @@
 import { storageService } from './storage.service.js';
+import { mapService } from './map.service.js';
 
 export const locService = {
     getLocs,
@@ -7,7 +8,7 @@ export const locService = {
     remove: removeLoc
 }
 
-const locs = storageService.load('locationDB') || [
+let locs = storageService.load('locationDB') || [
     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
     { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 ]
@@ -24,15 +25,22 @@ function getLocByName(name) {
     return locs.find(loc => loc.name === name);
 }
 
-function addLoc(locName, pos) {
-    locs.push({ name: locName, lat: pos.lat, lng: pos.lng, createdAt: Date.now() })
+function addLoc(loc) {
+    loc.createdAt = Date.now();
+    locs.push(loc);
     saveLocs();
 }
 
 function removeLoc(name) {
     const idx = locs.findIndex(loc => loc.name === name);
+    if (idx === -1) return;
     locs.splice(idx, 1);
+    if (locs.length === 0) locs = [
+        { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
+        { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
+    ]
     saveLocs();
+    mapService.addMarkers(Promise.resolve(locs));
 }
 
 function saveLocs() {
