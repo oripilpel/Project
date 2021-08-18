@@ -44,6 +44,7 @@ function renderLocsList() {
 function onLocSelected(locName) {
     const loc = locService.getLocByName(locName);
     onPanTo(loc);
+    onGetWeather(loc);
 }
 
 function renderWeather(weather) {
