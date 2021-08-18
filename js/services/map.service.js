@@ -1,3 +1,4 @@
+import { locService } from './loc.service.js';
 
 
 export const mapService = {
@@ -51,21 +52,25 @@ function _connectGoogleApi() {
     })
 }
 
-function getGeoLocation(address, callback) {
+function getGeoLocation(address) {
     const API_KEY = 'AIzaSyBj6uH299fNka4OlOEA05hitpszMFv3b1g'
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY}`
     const locs = locService.getLocs()
+    console.log(locs);
     const locIdx = locs.findIndex(loc => loc.name === address)
-    if (locIdx !== -1) {
-        callback(locs[locIdx])
-        return
-    }
+    // if (locIdx !== -1) {
+    //     callback(locs[locIdx])
+    //     return
+    // }
 
-    const prm = axios.get(url)
+    return axios.get(url)
         .then(res => {
             const location = res.data.results[0].geometry.location
             locs.push(location)
             return location
         })
-        .then(callback)
+    // .then(location => {
+    //     callback(location)
+    //     callback2(location)
+    // })
 }
