@@ -16,6 +16,7 @@ function getWeather(loc) {
         return Promise.resolve(currLocWeather.data);
     return axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&appid=${API_KEY}`)
         .then(({ data }) => {
+            gWeatherDB[data.coord.lat + '_' + data.coord.lon] = {};
             gWeatherDB[data.coord.lat + '_' + data.coord.lon].data = data;
             gWeatherDB[data.coord.lat + '_' + data.coord.lon].lastReq = Date.now();
             storageService.save(DB_KEY, gWeatherDB);
