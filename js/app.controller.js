@@ -20,7 +20,7 @@ function onInit() {
         params.lng = 34.9120554;
     }
     Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
-        .then(() => onGetWeather({lat: params.lat, lng: params.lng}))
+        .then(() => onGetWeather({ lat: params.lat, lng: params.lng }))
         .catch(() => console.log('Error: cannot init map'));
 }
 
@@ -41,13 +41,15 @@ function onLocSelected(locName) {
     const loc = locService.getLocByName(locName);
     onPanTo(loc);
     onGetWeather(loc);
+    window.history.pushState('', '', `?lat=${loc.lat}&lng=${loc.lng}`);
 }
 
 function renderWeather(weather) {
     document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
         <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
-        <div class="weather-info flex">
-            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatCelsius(weather.main.temp_min)} - ${utilsService.formatCelsius(weather.main.temp_max)}</span>
+        <div class="weather-info flex direction-column">
+            <div><span>${weather.weather[0].main}</span></div>
+            <span>${utilsService.formatCelsius(weather.main.temp_min)} - ${utilsService.formatCelsius(weather.main.temp_max)}</span>
         <div>`;
 }
 
@@ -76,11 +78,12 @@ function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
 function onSearch() {
     const location = document.querySelector('[name="location"]').value
     if (!location.trim()) return
-    const gelLoc = mapService.getGeoLocation(location)
-    gelLoc.then(location => {
-        onGetWeather(location)
-        mapService.panTo(location)
-    });
+    mapService.getGeoLocation(location)
+        .then(loc => {
+            onGetWeather(loc);
+            mapService.panTo(loc);
+            window.history.pushState('', '', `?lat=${loc.lat}&lng=${loc.lng}`);
+        });
 }
 
 function onGetWeather(loc) {
