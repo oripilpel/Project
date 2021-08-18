@@ -19,6 +19,7 @@ function onInit() {
         params.lat = 32.0749831;
         params.lng = 34.9120554;
     }
+    window.history.pushState('', '', `?lat=${params.lat}&lng=${params.lng}`);
     Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
         .then(() => onGetWeather({ lat: params.lat, lng: params.lng }))
         .catch(() => console.log('Error: cannot init map'));
