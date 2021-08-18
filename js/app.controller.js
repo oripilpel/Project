@@ -20,6 +20,7 @@ function onInit() {
         params.lng = 34.9120554;
     }
     Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
+        .then(() => onGetWeather({lat: params.lat, lng: params.lng}))
         .catch(() => console.log('Error: cannot init map'));
 }
 
@@ -46,7 +47,7 @@ function renderWeather(weather) {
     document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
         <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
         <div class="weather-info flex">
-            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
+            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatCelsius(weather.main.temp_min)} - ${utilsService.formatCelsius(weather.main.temp_max)}</span>
         <div>`;
 }
 
@@ -54,14 +55,6 @@ function onRemoveLoc(locName) {
     mapService.removeMarker(locName);
     locService.remove(locName);
     renderLocsList();
-}
-
-function onGetLocs() {
-    locService.getLocs()
-        .then(locs => {
-            console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
-        });
 }
 
 function onShowUserPos() {
