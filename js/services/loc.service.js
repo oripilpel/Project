@@ -7,8 +7,9 @@ export const locService = {
     add: addLoc,
     remove: removeLoc
 }
+const KEY = 'locationDB';
 
-let locs = storageService.load('locationDB') || [
+let locs = storageService.load(KEY) || [
     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
     { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 ]
@@ -44,5 +45,5 @@ function removeLoc(name) {
 }
 
 function saveLocs() {
-    storageService.save('locationDB', locs)
+    storageService.save(KEY, locs)
 }
