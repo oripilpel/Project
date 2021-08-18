@@ -10,9 +10,12 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
 window.onCopyLink = onCopyLink;
+window.onRemoveLoc = onRemoveLoc;
+window.onLocSelected = onLocSelected;
 window.onSaveLocation = onSaveLocation;
 
 function onInit() {
+    renderLocsList();
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     if (!params.lng || !params.lat) {
@@ -25,6 +28,36 @@ function onInit() {
         })
         .catch(() => console.log('Error: cannot init map'));
 
+}
+
+function renderLocsList() {
+    locService.getLocs()
+        .then(locs => {
+            document.querySelector('.locations').innerHTML = locs.map(loc => `<li>
+                <span>${loc.name}</span>
+                <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
+                <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
+            </li>`).join('');
+        })
+}
+
+function onLocSelected(locName) {
+    const loc = locService.getLocByName(locName);
+    onPanTo(loc);
+    onGetWeather(loc);
+}
+
+function renderWeather(weather) {
+    document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
+        <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
+        <div class="weather-info flex">
+            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
+        <div>`
+}
+
+function onRemoveLoc(locName) {
+    locService.remove(locName);
+    renderLocsList();
 }
 
 function onAddMarker() {
@@ -67,29 +100,21 @@ function onSearch() {
     )
 }
 
-function onGetWeather(loc = { lat: 32.0749831, lng: 34.9120554 }) {
+function onGetWeather(loc) {
     weatherService.get(loc)
         .then(weather => renderWeather(weather));
-}
-
-function renderWeather(weather) {
-    document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
-        <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
-        <div class="weather-info flex">
-            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
-        <div>`
 }
 
 function onCopyLink() {
     const regx = /.+?(?=.html).html/;
     const matches = window.location.href.match(regx);
-    const currLoc = mapService.getCurrLoc()//locService.getSeleted();
+    const currLoc = mapService.getCurrLoc();
     navigator.clipboard.writeText(`${matches[0]}?lat=${currLoc.lat}&lng=${currLoc.lng}`);
 }
 
 function onSaveLocation(lat, lng) {
     const locName = document.querySelector('[name="place-name-prompt"]').value
     if (!locName.trim()) return
-    locService.addLoc(locName, { lat, lng })
+    locService.add(locName, { lat, lng })
 
 }
