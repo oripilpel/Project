@@ -1,5 +1,7 @@
-import { locService } from './services/loc.service.js'
-import { mapService } from './services/map.service.js'
+import { locService } from './services/loc.service.js';
+import { mapService } from './services/map.service.js';
+import { utilsService } from './services/utils.service.js';
+import { weatherService } from './services/weather.service.js';
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
@@ -11,17 +13,9 @@ window.onSearch = onSearch;
 function onInit() {
     mapService.initMap()
         .then(() => {
-            console.log('Map is ready');
+            onGetWeather();
         })
         .catch(() => console.log('Error: cannot init map'));
-}
-
-// This function provides a Promise API to the callback-based-api of getCurrentPosition
-function getPosition() {
-    console.log('Getting Pos');
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject)
-    })
 }
 
 function onAddMarker() {
@@ -38,7 +32,7 @@ function onGetLocs() {
 }
 
 function onGetUserPos() {
-    getPosition()
+    utilsService.getPosition()
         .then(pos => {
             console.log('User position is:', pos.coords);
             document.querySelector('.user-pos').innerText =
@@ -57,4 +51,18 @@ function onPanTo(place) {
 function onSearch() {
     const location = document.querySelector('[name="location"]').value
     mapService.getGeoLocation(location, onPanTo)
+    mapService.panTo(35.6895, 139.6917);
+}
+
+function onGetWeather(loc = { lat: 35.6895, lon: 139.6917 }) {
+    weatherService.get(loc)
+        .then(weather => renderWeather(weather));
+}
+
+function renderWeather(weather) {
+    document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
+        <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
+        <div class="weather-info flex">
+            <span>${weather.weather[0].main} -&nbsp;</span><span>${weather.main.temp_min} - ${weather.main.temp_max}</span>
+        <div>`
 }

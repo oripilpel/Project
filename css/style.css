@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+/* BASE */
+
+body {
+    margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.map {
+    flex-grow: 1;
+}
+
+.weather-container {
+    text-align: center;
+    background-color: #ccc;
+    padding: 15px;
+}
+
+.weather-container h2 {
+    border-bottom: 1px solid black;
+}
+
+/* HELPERS */
+.flex {
+    display: flex;
+}
+
+.direction-column {
+    flex-direction: column;
+}
