@@ -117,5 +117,6 @@ function onSaveLocation(lat, lng) {
     const locName = document.querySelector('[name="place-name-prompt"]').value
     if (!locName.trim()) return
     locService.add(locName, { lat, lng })
+    mapService.closeInfoWindow();
     renderLocsList()
 }

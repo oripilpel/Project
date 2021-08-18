@@ -6,10 +6,13 @@ export const mapService = {
     addMarker,
     panTo,
     getGeoLocation,
-    getCurrLoc
+    getCurrLoc,
+    closeInfoWindow
 }
 
 var gMap;
+var gInfoWindow;
+
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
@@ -21,21 +24,21 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
-            let infoWindow = new google.maps.InfoWindow({
+            gInfoWindow = new google.maps.InfoWindow({
                 content: "Click the map to Save Locations!",
                 position: { lat, lng }
             });
 
-            infoWindow.open(gMap);
+            gInfoWindow.open(gMap);
             gMap.addListener("click", (mapsMouseEvent) => {
-                infoWindow.close();
-                infoWindow = new google.maps.InfoWindow({
+                gInfoWindow.close();
+                gInfoWindow = new google.maps.InfoWindow({
                     position: mapsMouseEvent.latLng,
                     content: `<h3>Save Location?</h3>
                     <input type="text" placeholder="enter place name" name="place-name-prompt">
                 <button class="yes" onclick="onSaveLocation${mapsMouseEvent.latLng}">Save</button>`
                 });
-                infoWindow.open(gMap);
+                gInfoWindow.open(gMap);
             })
 
         })
@@ -91,4 +94,8 @@ function getGeoLocation(address) {
 
 function getCurrLoc() {
     return { lat: gMap.center.lat(), lng: gMap.center.lng() };
+}
+
+function closeInfoWindow() {
+    gInfoWindow.close()
 }
