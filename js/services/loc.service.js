@@ -2,7 +2,9 @@ import { storageService } from './storage.service.js';
 
 export const locService = {
     getLocs,
-    addLoc
+    getLocByName: getLocByName,
+    addLoc,
+    remove: removeLoc
 }
 
 const locs = storageService.load('locationDB') || [
@@ -18,7 +20,21 @@ function getLocs() {
     });
 }
 
+function getLocByName(name) {
+    return locs.find(loc => loc.name === name);
+}
+
 function addLoc(locName, pos) {
     locs.push({ name: locName, lat: pos.lat, lng: pos.lng })
+    saveLocs();
+}
+
+function removeLoc(name) {
+    const idx = locs.findIndex(loc => loc.name === name);
+    locs.splice(idx, 1);
+    saveLocs();
+}
+
+function saveLocs() {
     storageService.save('locationDB', locs)
 }
