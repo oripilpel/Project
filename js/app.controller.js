@@ -63,6 +63,6 @@ function renderWeather(weather) {
     document.querySelector('.weather').innerHTML = `<h3>${weather.name}</h3>
         <img src="http://openweathermap.org/img/w/${weather.weather[0].icon}.png"/>
         <div class="weather-info flex">
-            <span>${weather.weather[0].main} -&nbsp;</span><span>${weather.main.temp_min} - ${weather.main.temp_max}</span>
+            <span>${weather.weather[0].main} -&nbsp;</span><span>${utilsService.formatFahrenheit(weather.main.temp_min)} - ${utilsService.formatFahrenheit(weather.main.temp_max)}</span>
         <div>`
 }
