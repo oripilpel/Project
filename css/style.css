@@ -6,9 +6,22 @@
 
 body {
     margin: 0;
+    font-family: sans-serif;
+    background-image: url('/img/bg.jpg');
+    background-size: cover;
 }
 
-h1,h2,h3,h4,h5,h6 {
+button {
+    font-family: sans-serif;
+}
+
+header {
+    display: flex;
+    padding: 15px 0;
+    justify-content: space-between;
+}
+
+h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
@@ -16,22 +29,44 @@ h2 {
     margin-bottom: 15px;
 }
 
-.btn {
-    padding: 5px;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.btn-go {
-    background-color: green;
-}
-
-.btn-remove {
-    background-color: red;
+.main-container {
+    gap: 20px;
 }
 
 .map {
-    flex-grow: 1;
+    width: 100%;
+}
+
+.btn {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+[name="location"] {
+    transition: 2s;
+    border-radius: 6px;
+    border: none
+}
+
+[name="location"]:focus {
+    width: 200px;
+}
+
+.search-btn {
+    border-radius: 5px;
+    border: none;
+    background-color: #4AA96C;
+    margin: 0px 10px;
+}
+
+.btn-go {
+    background-color: #4AA96C;
+}
+
+.btn-remove {
+    background-color: #DA0037;
 }
 
 .weather-container {
@@ -47,7 +82,7 @@ h2 {
 .locations {
     margin: 0;
     padding: 0;
-    background-color: #ccc;
+    background-color: #EDEDED;
     border-top: 1px solid black;
 }
 
@@ -56,10 +91,11 @@ h2 {
 }
 
 .locations li:nth-child(even) {
-    background-color: rgb(136, 129, 129);
+    background-color: #e0e0e0
 }
 
 /* HELPERS */
+
 .flex {
     display: flex;
 }
@@ -68,10 +104,15 @@ h2 {
     flex-direction: column;
 }
 
+.align-center {
+    align-items: center;
+}
+
 .justify-between {
     justify-content: space-between;
 }
 
-.align-center {
-    align-items: center;
+.main-layout {
+    max-width: 1100px;
+    margin: auto;
 }
