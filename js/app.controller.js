@@ -33,10 +33,12 @@ function onInit() {
 function renderLocsList() {
     locService.getLocs()
         .then(locs => {
-            document.querySelector('.locations').innerHTML = locs.map(loc => `<li>
+            document.querySelector('.locations').innerHTML = locs.map(loc => `<li class="flex justify-between">
                 <span>${loc.name}</span>
-                <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
-                <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
+                <div class="actions">
+                    <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
+                    <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
+                </div>
             </li>`).join('');
         })
 }

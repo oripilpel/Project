@@ -16,6 +16,20 @@ h2 {
     margin-bottom: 15px;
 }
 
+.btn {
+    padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.btn-go {
+    background-color: green;
+}
+
+.btn-remove {
+    background-color: red;
+}
+
 .map {
     flex-grow: 1;
 }
@@ -30,6 +44,21 @@ h2 {
     border-bottom: 1px solid black;
 }
 
+.locations {
+    margin: 0;
+    padding: 0;
+    background-color: #ccc;
+    border-top: 1px solid black;
+}
+
+.locations li {
+    padding: 15px;
+}
+
+.locations li:nth-child(even) {
+    background-color: rgb(136, 129, 129);
+}
+
 /* HELPERS */
 .flex {
     display: flex;
@@ -37,4 +66,12 @@ h2 {
 
 .direction-column {
     flex-direction: column;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
 }
