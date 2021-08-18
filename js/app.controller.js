@@ -50,12 +50,12 @@ function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
 
 function onSearch() {
     const location = document.querySelector('[name="location"]').value
-    mapService.getGeoLocation(location)
-        .then(location => {
-            onGetWeather(location)
-            mapService.panTo(location)
-        }
-        )
+    const gelLoc = mapService.getGeoLocation(location)
+    gelLoc.then(location => {
+        onGetWeather(location)
+        mapService.panTo(location)
+    }
+    )
 }
 
 function onGetWeather(loc = { lat: 35.6895, lng: 139.6917 }) {
