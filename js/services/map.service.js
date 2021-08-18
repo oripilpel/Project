@@ -82,7 +82,7 @@ function getGeoLocation(address) {
             .then(res => {
                 console.log('req');
                 const location = res.data.results[0].geometry.location
-                locService.addLoc(address, location)
+                locService.add(address, location)
                 return Promise.resolve(location)
             })
     })
