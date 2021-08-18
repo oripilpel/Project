@@ -56,6 +56,7 @@ function renderWeather(weather) {
 
 function onRemoveLoc(locName) {
     locService.remove(locName);
+    renderLocsList();
 }
 
 function onAddMarker() {
