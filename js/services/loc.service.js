@@ -1,10 +1,11 @@
-import { saveService } from './storage.service.js';
+import { storageService } from './storage.service.js';
 
 export const locService = {
-    getLocs
+    getLocs,
+    addLoc
 }
 
-const locs = saveService.load('locationDB') || [
+const locs = storageService.load('locationDB') || [
     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
     { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 ]
@@ -15,4 +16,9 @@ function getLocs() {
             resolve(locs);
         }, 2000)
     });
+}
+
+function addLoc(locName, pos) {
+    locs.push({ name: locName, lat: pos.lat, lng: pos.lng })
+    storageService.save('locationDB', locs)
 }
