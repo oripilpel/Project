@@ -94,6 +94,7 @@ function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
 
 function onSearch() {
     const location = document.querySelector('[name="location"]').value
+    if (!location.trim()) return
     const gelLoc = mapService.getGeoLocation(location)
     gelLoc.then(location => {
         onGetWeather(location)
