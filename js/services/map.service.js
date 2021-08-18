@@ -6,7 +6,8 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getGeoLocation
+    getGeoLocation,
+    getCurrLoc
 }
 
 var gMap;
@@ -28,7 +29,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             infoWindow.open(gMap);
             gMap.addListener("click", (mapsMouseEvent) => {
                 infoWindow.close();
-                
+
             })
 
         })
@@ -82,3 +83,8 @@ function getGeoLocation(address) {
     })
 }
 
+
+
+function getCurrLoc() {
+    return { lat: gMap.center.lat(), lng: gMap.center.lng() };
+}
