@@ -38,7 +38,7 @@ function renderLocsList() {
                 <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
                 <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
             </li>`)
-        })
+        }).join('');
 }
 
 function onLocSelected(locName) {
