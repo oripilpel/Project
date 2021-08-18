@@ -30,8 +30,8 @@ function renderLocsList() {
             document.querySelector('.locations').innerHTML = locs.map(loc => `<li class="flex justify-between">
                 <span class="flex align-center">${loc.name}</span>
                 <div class="actions">
-                    <button class="btn btn-go" onclick="onLocSelected('${loc.name}')">Go</button>
-                    <button class="btn btn-remove" onclick="onRemoveLoc('${loc.name}')">Delete</button>
+                    <button class="btn btn-go transform" onclick="onLocSelected('${loc.name}')">Go</button>
+                    <button class="btn btn-remove transform" onclick="onRemoveLoc('${loc.name}')">Delete</button>
                 </div>
             </li>`).join('');
         })

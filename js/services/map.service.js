@@ -37,7 +37,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                     position: mapsMouseEvent.latLng,
                     content: `<h3>Save Location?</h3>
                     <input type="text" placeholder="enter place name" name="place-name-prompt">
-                <button class="yes" onclick="onSaveLocation${mapsMouseEvent.latLng}">Save</button>`
+                <button class="add-location-btn transform" onclick="onSaveLocation${mapsMouseEvent.latLng}">Save</button>`
                 });
                 gInfoWindow.open(gMap);
             })
