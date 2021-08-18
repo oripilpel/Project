@@ -43,18 +43,22 @@ function onGetUserPos() {
         })
 }
 
-function onPanTo(place) {
+function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
     console.log('Panning the Map');
-    mapService.panTo(place.lat, place.lng);
+    mapService.panTo(loc.lat, loc.lng);
 }
 
 function onSearch() {
     const location = document.querySelector('[name="location"]').value
-    mapService.getGeoLocation(location, onPanTo)
-    mapService.panTo(35.6895, 139.6917);
+    mapService.getGeoLocation(location)
+        .then(location => {
+            onGetWeather(location)
+            mapService.panTo(location)
+        }
+        )
 }
 
-function onGetWeather(loc = { lat: 35.6895, lon: 139.6917 }) {
+function onGetWeather(loc = { lat: 35.6895, lng: 139.6917 }) {
     weatherService.get(loc)
         .then(weather => renderWeather(weather));
 }
