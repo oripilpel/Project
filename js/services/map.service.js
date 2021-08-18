@@ -52,6 +52,7 @@ function addMarker(loc) {
         map: gMap,
         title: loc.name
     });
+    gMarkers.push({ name: loc.name, marker })
     return marker;
 }
 
