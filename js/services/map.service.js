@@ -1,5 +1,4 @@
 import { locService } from './loc.service.js';
-import { saveService } from './storage.service.js';
 
 
 export const mapService = {
@@ -76,8 +75,7 @@ function getGeoLocation(address) {
             .then(res => {
                 console.log('req');
                 const location = res.data.results[0].geometry.location
-                locs.push({ name: address, lat: location.lat, lng: location.lng })
-                saveService.save('locationDB', locs)
+                locService.addLoc(address, location)
                 return Promise.resolve(location)
             })
     })
