@@ -10,6 +10,7 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
 window.onCopyLink = onCopyLink;
+window.onSaveLocation = onSaveLocation;
 
 function onInit() {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -87,4 +88,11 @@ function onCopyLink() {
     const matches = window.location.href.match(regx);
     const currLoc = mapService.getCurrLoc()//locService.getSeleted();
     navigator.clipboard.writeText(`${matches[0]}?lat=${currLoc.lat}&lng=${currLoc.lng}`);
+}
+
+function onSaveLocation(lat, lng) {
+    const locName = document.querySelector('[name="place-name-prompt"]').value
+    if (!locName.trim()) return
+    locService.addLoc(locName, { lat, lng })
+
 }

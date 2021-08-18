@@ -25,10 +25,17 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 content: "Click the map to Save Locations!",
                 position: { lat: 32.0749831, lng: 34.9120554 }
             });
+
             infoWindow.open(gMap);
             gMap.addListener("click", (mapsMouseEvent) => {
                 infoWindow.close();
-
+                infoWindow = new google.maps.InfoWindow({
+                    position: mapsMouseEvent.latLng,
+                    content: `<h3>Save Location?</h3>
+                    <input type="text" placeholder="enter place name" name="place-name-prompt">
+                <button class="yes" onclick="onSaveLocation${mapsMouseEvent.latLng}">Save</button>`
+                });
+                infoWindow.open(gMap);
             })
 
         })
