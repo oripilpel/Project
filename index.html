@@ -14,7 +14,7 @@
         <div class="search-bar flex">
             <input type="search" name="location" placeholder="Enter Location">
             <button class="search-btn transform" onclick="onSearch()">GO</button>
-            <button onclick="onGetUserPos()" class="user-pos-btn transform">My Location</button>
+            <button onclick="onShowUserPos()" class="user-pos-btn transform">My Location</button>
             <button onclick="onCopyLink()" class="copy-btn transform">Copy link</button>
 
         </div>
@@ -28,7 +28,7 @@
             <ul class="locations"></ul>
         </aside>
         <div class="map">
-            <div id="map" style="width: 100%; height: 100%;"></div>
+            <div id="map"></div>
         </div>
     </div>
 
