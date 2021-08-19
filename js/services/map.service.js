@@ -102,7 +102,7 @@ function closeInfoWindow() {
 function addMarkers(locsPrm) {
     return locsPrm.then(locs => {
         locs.forEach(loc =>
-            gMarkers.push({ name: loc.name, marker: addMarker(loc) })
+            addMarker(loc)
         );
     });
 }
