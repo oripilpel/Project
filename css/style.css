@@ -23,13 +23,9 @@ header {
 }
 
 header .search-bar {
-    display: grid;
-    grid-template-areas: "search search-btn" "loc-btn copt-btn";
-    gap: 10px 8px;
-}
-
-header .search-bar>button {
-    margin: 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,7 +50,9 @@ h2 {
 }
 
 aside {
+    flex: 1;
     min-width: 200px;
+    max-width: 80vw;
 }
 
 #map {
@@ -103,10 +101,6 @@ li.hide {
     background-color: #1b1e23;
     color: whitesmoke;
     padding: 8px;
-}
-
-.user-pos-btn {
-    margin: 0 10px;
 }
 
 .add-location-btn {
@@ -191,9 +185,11 @@ li.hide {
 
 @media screen and (min-width:516px) {
     header .search-bar {
-        display: flex;
-        grid-template-areas: unset;
         gap: 10px 8px;
+        flex-direction: unset;
+    }
+    .user-pos-btn {
+        margin: 0 10px;
     }
 }
 
@@ -228,7 +224,7 @@ li.hide {
         max-width: 1100px;
     }
     .map {
-        width: 100%;
+        width: 60vw;
         height: 70vh;
     }
     h1 {

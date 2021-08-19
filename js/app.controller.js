@@ -77,7 +77,8 @@ function onPanTo(loc = { lat: 35.6895, lng: 139.6917 }) {
     mapService.panTo(loc.lat, loc.lng);
 }
 
-function onSearch() {
+function onSearch(ev) {
+    ev.preventDefault()
     const location = document.querySelector('[name="location"]').value
     if (!location.trim()) return
     mapService.getGeoLocation(location)
