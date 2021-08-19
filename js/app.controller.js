@@ -18,10 +18,10 @@ function onInit() {
     if (!params.lng || !params.lat) {
         params.lat = 32.0749831;
         params.lng = 34.9120554;
+        window.history.pushState('', '', `?lat=${params.lat}&lng=${params.lng}`);
     }
-    window.history.pushState('', '', `?lat=${params.lat}&lng=${params.lng}`);
     Promise.all([mapService.initMap(+params.lat, +params.lng), mapService.addMarkers(locService.getLocs())])
-        .then(() => onGetWeather({ lat: params.lat, lng: params.lng }))
+        .then(() => onGetWeather({ lat: +params.lat, lng: +params.lng }))
         .catch(() => console.log('Error: cannot init map'));
 }
 
@@ -95,10 +95,8 @@ function onGetWeather(loc) {
 }
 
 function onCopyLink() {
-    const regx = /.+?(?=.html).html/;
-    const matches = window.location.href.match(regx);
     const currLoc = mapService.getCurrLoc();
-    navigator.clipboard.writeText(`${matches[0]}?lat=${currLoc.lat}&lng=${currLoc.lng}`);
+    navigator.clipboard.writeText(`https://oripilpel.github.io/Project/?lat=${currLoc.lat}&lng=${currLoc.lng}`);
 }
 
 function onSaveLocation(lat, lng) {
